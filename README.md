@@ -6,4 +6,4 @@ Apesar de o blend gerar dinamicamente a maioria dos formulários e modelos, exis
 Para estar casos é possível gerar modelos, páginas, fieldlayout, combos e etc através dessa ferramenta.
 
 # Configuração inicial
-Crie um config.php e faça o required o blend.php.
+Crie um config.php e faça o require do blend.php.
