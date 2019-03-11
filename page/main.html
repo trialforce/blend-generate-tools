@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="">
+        <title>Blend - Tools</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link id="removeTheme" rel="stylesheet" href="../theme/theme.css" type="text/css"/>
+    </head>
+    <body>
+        <style>
+            label {
+                display: inline-block;
+                width: 100px;
+            }
+        </style>
+        <div id="main" class = "main">
+            <strong>Blend - WebFramework - Code Generate Tools</strong>
+            <form>
+                <fieldset>
+                    <legend>Connection information</legend>
+                    <div>
+                        <label for="dbConnType">Type</label>
+                        <select id="dbConnType" name="dbConnType">
+                            <option value="mysql">MySql</option>
+                            <option value="dblib">MsSql</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="dbConnHost">Host</label>
+                        <input id="dbConnHost" name="dbConnHost" />
+                    </div>
+                    <div>
+                        <label for="dbConnName">Name</label>
+                        <input id="dbConnName" name="dbConnName" />
+                    </div>
+                    <div>
+                        <label for="dbConnUser">User</label>
+                        <input id="dbConnUser" name="dbConnUser" />
+                    </div>
+                    <div>
+                        <label for="dbConnPassword">Password</label>
+                        <input id="dbConnPassword" name="dbConnPassword" />
+                    </div>
+                    <a href="main/saveConf" data-ajax="true">Save prefs</a>
+                </fieldset>
+                <div id="content">
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
