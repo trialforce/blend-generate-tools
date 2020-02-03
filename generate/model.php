@@ -8,7 +8,7 @@ namespace Generate;
 class Model extends Base
 {
 
-    public function generateProperties($columns, $comments, $publicProperties)
+    public function generateProperties($columns, $comments = TRUE, $publicProperties = false)
     {
         $result = '';
         //gera propriedades
@@ -84,89 +84,79 @@ class Model extends Base
 }';
     }
 
-    /**
-     * Generate a model
-     *
-     * @param string $tableName
-     * @param boolean $comment
-     * @return string
-     */
-    function generate()
+    public function generateHeader($tableExists, $extends = '\Db\Model')
     {
-        //configs
-        $table = $this->tableName;
-        $comments = TRUE;
-        $publicProperties = FALSE;
-        $columns = \Db\Catalog\Mysql::listColums($table, FALSE);
-        $tableExists = \Db\Catalog\Mysql::tableExists($table, FALSE);
-
-        $className = ucfirst($table);
+        $className = ucfirst($this->tableName);
         $label = $tableExists->label ? $tableExists->label : $className;
 
-        $classCode = '<?php' . PHP_EOL . PHP_EOL . 'namespace Model;' . PHP_EOL . 'use \Db\Column as Column;' . PHP_EOL;
-        $namespace = '\Model\\';
-        $extends = '\Db\Model';
-
-        if ($comments)
-        {
-            $classCode .= "
+        $classCode = '<?php' . PHP_EOL . PHP_EOL . 'namespace Model;' . PHP_EOL . 'use \Db\Column\Column as Column;' . PHP_EOL;
+        $extends = $extends ? $extends : '\Db\Model';
+        $classCode .= "
 /**
 * Model $label
 */
 ";
-        }
 
         $classCode .= "class $className extends $extends\n{" . PHP_EOL;
-        $classCode .= $this->generateProperties($columns, $comments, $publicProperties);
 
-        //gera getters and setter
-        if (!$publicProperties)
+        return $classCode;
+    }
+
+    public function generateGetSetter($columns, $comments = TRUE)
+    {
+        $namespace = '\Model\\';
+        $className = ucfirst($this->tableName);
+        $classCode = '';
+
+        foreach ($columns as $column)
         {
-            foreach ($columns as $column)
-            {
-                $column instanceof \Db\Column;
-                $columnName = $column->getName();
-                $functionName = ucfirst($columnName);
-                $phpType = $column->getPHPType();
-                $columnlabel = $column->getLabel() ? $column->getLabel() : $column->mountLabel();
-                $commentLabel = lcfirst($columnlabel);
+            $column instanceof \Db\Column;
+            $columnName = $column->getName();
+            $functionName = ucfirst($columnName);
+            $phpType = $column->getPHPType();
+            $columnlabel = $column->getLabel() ? $column->getLabel() : $column->mountLabel();
+            $commentLabel = lcfirst($columnlabel);
 
-                if ($comments)
-                {
-                    $classCode .= '
+            if ($comments)
+            {
+                $classCode .= '
     /**
     * Retorna o ' . $commentLabel . '
     * @return ' . $phpType . '
     */
 ';
-                }
+            }
 
-                if ($column->getType() == \Db\Column::TYPE_DATETIME)
-                {
-                    $returnCode = 'new \Type\Datetime($this->' . $columnName . ')';
-                }
-                else if ($column->getType() == \Db\Column::TYPE_DECIMAL)
-                {
-                    $returnCode = 'new \Type\Decimal($this->' . $columnName . ')';
-                }
-                else
-                {
-                    $returnCode = '$this->' . $columnName;
-                }
+            if ($column->getType() == \Db\Column::TYPE_DATE)
+            {
+                $returnCode = 'new \Type\Date($this->' . $columnName . ')';
+            }
+            else if ($column->getType() == \Db\Column::TYPE_DATETIME)
+            {
+                $returnCode = 'new \Type\Datetime($this->' . $columnName . ')';
+            }
+            else if ($column->getType() == \Db\Column::TYPE_DECIMAL)
+            {
+                $returnCode = 'new \Type\Decimal($this->' . $columnName . ')';
+            }
+            else
+            {
+                $returnCode = '$this->' . $columnName;
+            }
 
-                $classCode .= '    public function get' . $functionName . '()
+            $classCode .= '    public function get' . $functionName . '()
     {
         return ' . $returnCode . ';
     }';
 
-                if ($comments)
-                {
-                    /**
-                     * Define o código
-                     * @param int $id
-                     * @return \Model\Noticia
-                     */
-                    $classCode .= '
+            if ($comments)
+            {
+                /**
+                 * Define o código
+                 * @param int $id
+                 * @return \Model\Noticia
+                 */
+                $classCode .= '
 
     /**
     * Define o ' . $commentLabel . '
@@ -174,17 +164,32 @@ class Model extends Base
     * return ' . $namespace . $className . '
     */
 ';
-                }
+            }
 
-                $classCode .= '    public function set' . $functionName . '($' . $columnName . ')
+            $classCode .= '    public function set' . $functionName . '($' . $columnName . ')
     {
         $this->' . $columnName . ' = $' . $columnName . ';
         return $this;
     }
 ';
-            }
         }
+    }
 
+    /**
+     * Generate a model
+     * @param type $comments
+     * @param type $publicProperties
+     * @return type
+     */
+    function generate($comments = TRUE, $publicProperties = FALSE)
+    {
+        $table = $this->tableName;
+
+        $columns = \Db\Catalog\Mysql::listColums($table, FALSE);
+        $tableExists = \Db\Catalog\Mysql::tableExists($table, FALSE);
+        $classCode .= $this->generateHeader($tableExists);
+        $classCode .= $this->generateProperties($columns, $comments, $publicProperties);
+        $classCode .= $this->generateGetSetter($columns);
         $classCode .= $this->generateColumns($columns);
 
         return $classCode;
