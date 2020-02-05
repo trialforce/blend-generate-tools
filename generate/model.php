@@ -173,6 +173,8 @@ class Model extends Base
     }
 ';
         }
+        
+        return $classCode;
     }
 
     /**
