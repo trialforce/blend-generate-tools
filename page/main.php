@@ -33,7 +33,7 @@ class Main extends \Page\Page
     public function saveConf()
     {
         \App::dontChangeUrl();
-
+		
         if (strlen(Request::get('dbConnHost')) > 0)
         {
             Session::set('dbConnType', Request::get('dbConnType'));
