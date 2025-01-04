@@ -7,7 +7,7 @@ require 'config.php';
 
 header( 'Content-Type: text/html; charset=utf-8' );
 header( 'X-Frame-Options: SAMEORIGIN' );
-define( 'APP_PATH', adjusthPath( dirname( __FILE__ ) ) );
+define( 'APP_PATH',  dirname( __FILE__ ));
 ini_set("display_errors", "1"); //desabilita mostrar erros na tela
 ini_set("log_errors", "1"); //habilita log de erros
 ini_set("error_log", getcwd() . '/error.log');
@@ -15,13 +15,13 @@ ini_set('memory_limit', -1);
 
 function filePath( $class, $extension = 'php' )
 {
-    $file = APP_PATH . DS . strtolower( str_replace('\\','/',$class) ) . '.' . $extension;
+    $file = APP_PATH . '/' . strtolower( str_replace('\\','/',$class) ) . '.' . $extension;
     return $file;
 }
 
 function loadFile( $class )
 {
-    $filename = filePath( DS . $class, 'php' );
+    $filename = filePath( '/'. $class, 'php' );
 
     if ( is_file( $filename ) )
     {

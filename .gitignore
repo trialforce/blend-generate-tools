@@ -3,3 +3,6 @@ nbproject
 config.php
 error.log
 storage
+/.idea/blendtools.iml
+/.idea/modules.xml
+/.idea/workspace.xml

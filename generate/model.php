@@ -151,16 +151,11 @@ class Model extends Base
 
             if ($comments)
             {
-                /**
-                 * Define o código
-                 * @param int $id
-                 * @return \Model\Noticia
-                 */
                 $classCode .= '
 
     /**
     * Define o ' . $commentLabel . '
-    * @param ' . $phpType . ' ' . $columnName . '
+    * @param ' . $phpType . ' $' . $columnName . '
     * return ' . $namespace . $className . '
     */
 ';
