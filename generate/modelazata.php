@@ -3,7 +3,7 @@
 namespace Generate;
 
 /**
- * Class used to generate code to azara project
+ * Class used to generate code to azata project
  */
 class ModelAzata extends \Generate\Model
 {

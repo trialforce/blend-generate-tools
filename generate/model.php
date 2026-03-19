@@ -14,6 +14,13 @@ class Model extends Base
         //gera propriedades
         foreach ($columns as $column)
         {
+            $columnName = $column->getName();
+            
+            if ($columnName == 'id')
+            {
+                continue;
+            }
+            
             if ($comments)
             {
                 $columnlabel = $column->getLabel() ? $column->getLabel() : $column->mountLabel();
@@ -47,7 +54,7 @@ class Model extends Base
             $isPrimaryKey = $column->getIsPrimaryKey() == 1 ? 'TRUE' : 'FALSE';
             $defaultValue = $column->getDefaultValue();
 
-            if (is_null($defaultValue))
+            if (is_null($defaultValue) || $defaultValue == 'NULL')
             {
                 $defaultValue = 'NULL';
             }
@@ -62,13 +69,13 @@ class Model extends Base
             }
 
             $extra = $column->isAutoPrimaryKey() ? 'Column::EXTRA_AUTO_INCREMENT' : 'NULL';
-            $columnsCode .= ' $columns[ \'' . $columnname . '\' ] = new Column( \'' . $columnlabel . '\', \'' . $columnname . '\', Column::TYPE_' . $type . ', ' . $size . ', ' . $nullable . ', ' . $isPrimaryKey . ', ' . $defaultValue . ', ' . $extra . ' );' . PHP_EOL;
+            $columnsCode .= '        $columns[\'' . $columnname . '\'] = new Column(\'' . $columnlabel . '\', \'' . $columnname . '\', Column::TYPE_' . $type . ', ' . $size . ', ' . $nullable . ', ' . $isPrimaryKey . ', ' . $defaultValue . ', ' . $extra . ');' . PHP_EOL;
 
             if ($column->getReferenceTable())
             {
                 $referenceTable = $column->getReferenceTable();
                 $referenceField = $column->getReferenceField();
-                $columnsCode .= '        $columns[ \'' . $columnname . '\' ]->setReferenceTable(\'' . $referenceTable . '\',\'' . $referenceField . '\');' . PHP_EOL;
+                $columnsCode .= '        $columns[\'' . $columnname . '\']->setReferenceTable(\'' . $referenceTable . '\',\'' . $referenceField . '\');' . PHP_EOL;
             }
         }
 
@@ -112,6 +119,12 @@ class Model extends Base
         {
             $column instanceof \Db\Column;
             $columnName = $column->getName();
+            
+            if ($columnName == 'id')
+            {
+                continue;
+            }
+            
             $functionName = ucfirst($columnName);
             $phpType = $column->getPHPType();
             $columnlabel = $column->getLabel() ? $column->getLabel() : $column->mountLabel();
