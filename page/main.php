@@ -88,9 +88,12 @@ class Main extends \Page\Page
         $result[] = new \View\Br();
         $result[] = new \View\Br();
         $result[] = new \View\Button('btnGenerate', 'Generate', 'generate');
+        $result[] = $btnCopiar = new \View\Button('btnCopy', 'Copy', 'copy()');
         $result[] = new \View\Br();
         $result[] = new \View\Br();
         $result[] = new \View\Div('result');
+        
+        $btnCopiar->css('margin-left', '10px');
 
         return $result;
     }

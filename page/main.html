@@ -3,17 +3,18 @@
     <head>
         <base href="">
         <title>Blend - Tools</title>
+        <link id="favicon" rel="shortcut icon" href="favicon.ico" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link id="removeTheme" rel="stylesheet" href="../theme/theme.css" type="text/css"/>
-    </head>
-    <body>
+        
         <style>
             label {
                 display: inline-block;
                 width: 100px;
             }
         </style>
+    </head>
+    <body>
         <div id="main" class = "main">
             <strong>Blend - WebFramework - Code Generate Tools</strong>
             <form>
@@ -42,11 +43,25 @@
                         <label for="dbConnPassword">Password</label>
                         <input id="dbConnPassword" name="dbConnPassword" />
                     </div>
-                    <a href="main/saveConf" data-ajax="true" onclick="return p('main/saveConf');	">Save prefs</a>
+                    <a href="main/saveConf" data-ajax="true" onclick="return p('main/saveConf');">Save prefs</a>
                 </fieldset>
                 <div id="content">
                 </div>
             </form>
         </div>
+    
+    <script>
+        function copy() {
+            const text = document.getElementById("result").innerText;
+
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                })
+                .catch(err => {
+                    console.error("Copy error:", err);
+                });
+        }
+    </script>
+    
     </body>
 </html>
