@@ -54,13 +54,9 @@ class Model extends Base
             $isPrimaryKey = $column->getIsPrimaryKey() == 1 ? 'TRUE' : 'FALSE';
             $defaultValue = $column->getDefaultValue();
 
-            if (is_null($defaultValue) || $defaultValue == 'NULL')
+            if (is_null($defaultValue))
             {
                 $defaultValue = 'NULL';
-            }
-            else if (!is_numeric($defaultValue)) //string value
-            {
-                $defaultValue = '\'' . $defaultValue . '\'';
             }
 
             if ($defaultValue === 'CURRENT_TIMESTAMP')
