@@ -113,7 +113,7 @@ class Model extends Base
 
         foreach ($columns as $column)
         {
-            $column instanceof \Db\Column;
+            $column instanceof \Db\Column\Column;
             $columnName = $column->getName();
             
             if ($columnName == 'id')
@@ -136,15 +136,15 @@ class Model extends Base
 ';
             }
 
-            if ($column->getType() == \Db\Column::TYPE_DATE)
+            if ($column->getType() == \Db\Column\Column::TYPE_DATE)
             {
                 $returnCode = 'new \Type\Date($this->' . $columnName . ')';
             }
-            else if ($column->getType() == \Db\Column::TYPE_DATETIME)
+            else if ($column->getType() == \Db\Column\Column::TYPE_DATETIME)
             {
                 $returnCode = 'new \Type\Datetime($this->' . $columnName . ')';
             }
-            else if ($column->getType() == \Db\Column::TYPE_DECIMAL)
+            else if ($column->getType() == \Db\Column\Column::TYPE_DECIMAL)
             {
                 $returnCode = 'new \Type\Decimal($this->' . $columnName . ')';
             }

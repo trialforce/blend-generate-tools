@@ -22,7 +22,7 @@ class Combo extends Base
             foreach ($columns as $column)
             {
                 //$columns[] = new \View\Grid\Column( 'nome', 'Nome/Razão', \View\Grid\Column::ALIGN_LEFT, \Db\Column::TYPE_VARCHAR );
-                $result .= '        $columns[] = new \View\Grid\Column( \'' . $column->getLabel() . '\', \'' . $column->getName() . '\', \View\Grid\Column::ALIGN_LEFT, \Db\Column::TYPE_VARCHAR );' . "\n";
+                $result .= '        $columns[] = new \View\Grid\Column( \'' . $column->getLabel() . '\', \'' . $column->getName() . '\', \View\Grid\Column::ALIGN_LEFT, \Db\Column\Column::TYPE_VARCHAR );' . "\n";
             }
         }
 
